@@ -11,19 +11,15 @@
 // Counter Function when product button is clicked
 // Function that Array that adds emoji property on a button click
 
-let liveSaleCount = 0;
-let liveAchiveCount = 0;
 const buttonStar = document.querySelector("#button-star");
 const buttonFire = document.querySelector("#button-fire");
+const buttons = document.querySelector(".button-container");
 const liveSales = document.querySelector(".live-sales-field");
 const liveAchieve = document.querySelector("#live-achieve-counter");
 const emojiField = document.querySelector('.emoji-field');
-let totalRevenue = document.querySelector('.dollar-field')
-let totalCommision = document.querySelector('#commision-field')
 const achieveField = document.querySelector('#achievements-field')
-
-let currentTotalRev = 0;
-let currentTotalCom = 0;
+const totalRevenue = document.querySelector('.dollar-field')
+const totalCommision = document.querySelector('#commision-field')
 
 const soldProducts = [
   {
@@ -41,56 +37,88 @@ const soldProducts = [
 
 ]
 
+let liveSaleCount = 0;
+let liveAchiveCount = 0;
+let currentTotalRev = 0;
+let currentTotalCom = 0;
 
+
+let clickedButton = ''
+buttons.addEventListener("click", (event) => {
+  clickedButton = event.target.innerHTML
+  console.log(clickedButton)
+  incrementStarSalesArray()
+})
+function incrementStarSalesArray() {
+  const filteredArray = soldProducts.filter(function (item) {
+    return item.emoji === clickedButton
+  })
+  if (filteredArray.length > 0) {
+    const index = soldProducts.indexOf(filteredArray[0])
+    const filteredData = filteredArray[0]
+    liveSaleCount++
+    liveSales.innerHTML = `Live Sales:  ${liveSaleCount}`;
+    emojiField.innerHTML += filteredData.emoji
+    currentTotalRev += filteredData.revenue
+    currentTotalCom += filteredData.commision
+    totalRevenue.innerHTML = '$' + currentTotalRev;
+    totalCommision.innerHTML = '$' + currentTotalCom;
+  }
+  incrementLiveAchive()
+}
+
+function incrementLiveAchive() {
+
+  if (liveSaleCount === 1) {
+
+    achieveField.innerHTML += '🔔'
+    liveAchiveCount++
+  }
+  if (currentTotalRev >= 2500 && liveAchiveCount === 1) {
+    liveAchiveCount++
+    achieveField.innerHTML += '💰'
+  }
+  if (liveSaleCount === 15) {
+    liveAchiveCount++
+    achieveField.innerHTML += '🏆'
+  }
+  liveAchieve.innerHTML = `Live Achievements:  ${liveAchiveCount}`;
+}
 
 
 //EVENT LISTENERS
-buttonStar.addEventListener("click", incrementStarSales);
-buttonFire.addEventListener("click", incrementFireSales);
+// buttonStar.addEventListener("click", incrementStarSales);
+// buttonFire.addEventListener("click", incrementFireSales);
+
 
 //COUNTER FUNCTIONS
-function incrementStarSales() {
-  liveSaleCount++;
-  liveSales.innerHTML = "Live Sales:" + "  " + liveSaleCount;
-  emojiField.innerHTML += soldProducts[0].emoji;
-  currentTotalRev += soldProducts[0].revenue;
-  currentTotalCom += soldProducts[0].commision;
-  totalRevenue.innerHTML = '$' + currentTotalRev;
-  totalCommision.innerHTML = '$' + currentTotalCom;
-  if (liveSaleCount === 1 || liveSaleCount === 15) {
-    incrementLiveAchive();
-  }
-}
+// function incrementStarSales() {
+//   liveSaleCount++;
+//   liveSales.innerHTML = "Live Sales:" + "  " + liveSaleCount;
+//   emojiField.innerHTML += soldProducts[0].emoji;
+//   currentTotalRev += soldProducts[0].revenue;
+//   currentTotalCom += soldProducts[0].commision;
+//   totalRevenue.innerHTML = '$' + currentTotalRev;
+//   totalCommision.innerHTML = '$' + currentTotalCom;
+//   if (liveSaleCount === 1 || liveSaleCount === 15) {
+//     incrementLiveAchive();
+//   }
+// }
 
 
-function incrementFireSales() {
-  liveSaleCount++;
-  liveSales.innerHTML = "Live Sales:" + "  " + liveSaleCount;
-  emojiField.innerHTML += soldProducts[1].emoji
-  currentTotalRev += soldProducts[1].revenue;
-  currentTotalCom += soldProducts[1].commision;
-  totalRevenue.innerHTML = '$' + currentTotalRev;
-  totalCommision.innerHTML = '$' + currentTotalCom;
+// function incrementFireSales() {
+//   liveSaleCount++;
+//   liveSales.innerHTML = "Live Sales:" + "  " + liveSaleCount;
+//   emojiField.innerHTML += soldProducts[1].emoji
+//   currentTotalRev += soldProducts[1].revenue;
+//   currentTotalCom += soldProducts[1].commision;
+//   totalRevenue.innerHTML = '$' + currentTotalRev;
+//   totalCommision.innerHTML = '$' + currentTotalCom;
 
-  if (liveSaleCount === 1 || liveSaleCount === 15) {
-    incrementLiveAchive();
-  }
-
-
-
-}
-function incrementLiveAchive() {
-  liveAchiveCount++;
-  liveAchieve.innerHTML = "Live Achievements: " + "  " + liveAchiveCount;
-  if (liveSaleCount === 1) {
-    achieveField.innerHTML += '🔔'
-  }
-  else if (liveSaleCount === 15) {
-    achieveField.innerHTML += '💰'
-  }
-}
-
-
+//   if (liveSaleCount === 1 || liveSaleCount === 15) {
+//     incrementLiveAchive();
+//   }
+// }
 //CONDITIONS
 
 // ADD ELEMENT TO ARRAY
